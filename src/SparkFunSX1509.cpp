@@ -346,8 +346,8 @@ void SX1509::keypad(byte rows, byte columns, unsigned int sleepTime, byte scanTi
 	tempWord = readWord(REG_DIR_B);
 	for (int i=0; i<rows; i++)
 		tempWord &= ~(1<<i);
-	for (int i=8; i<(columns * 2); i++)
-		tempWord |= (1<<i);
+	for (int i=8; i<columns; i++)
+		tempWord |= (1<<(i+8));
 	writeWord(REG_DIR_B, tempWord);
 	
 	// Set regOpenDrain on 0:7:
@@ -534,8 +534,8 @@ void SX1509::debounceKeypad(byte time, byte numRows, byte numCols)
 	// Set up debounce pins:
 	for (int i = 0; i < numRows; i++)
 		debouncePin(i);
-	for (int i = 0; i < (8 + numCols); i++)
-		debouncePin(i);
+	for (int i = 0; i < numCols; i++)
+		debouncePin(i+8);
 }
 
 void SX1509::enableInterrupt(byte pin, byte riseFall)
